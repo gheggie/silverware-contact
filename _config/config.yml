@@ -1,0 +1,19 @@
+---
+Name: silverware-contact
+---
+
+# Configure Content Controller:
+
+SilverStripe\CMS\Controllers\ContentController:
+  required_js:
+    - silverware-contact/client/dist/js/bundle.js
+  required_css:
+    - silverware-contact/client/dist/styles/bundle.css
+
+# Configure Admin Extensions:
+
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_css:
+    - silverware-contact/admin/client/dist/styles/bundle.css
+  extra_requirements_javascript:
+    - silverware-contact/admin/client/dist/js/bundle.js

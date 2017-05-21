@@ -1,0 +1,29 @@
+/* SilverWare Contact Admin Styles
+===================================================================================================================== */
+
+// Edit Form Styles:
+
+.cms-edit-form {
+  
+  .formatted-message {
+    border: $border-width solid $gray-lighter;
+    padding: $panel-padding-y $panel-padding-x;
+    background: $white none;
+    border-radius: $border-radius;
+  }
+  
+}
+
+// Grid Field Styles:
+
+.ss-gridfield {
+  
+  .ss-gridfield-item {
+    
+    span.unread {
+      font-weight: bold;
+    }
+    
+  }
+  
+}

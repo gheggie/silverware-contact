@@ -1,0 +1,15 @@
+/* Contact Component Styles
+===================================================================================================================== */
+
+.contactcomponent {
+  
+  .items {
+    
+    > section.contactitem {
+      overflow: hidden;
+      margin-bottom: $spacer;
+    }
+    
+  }
+  
+}
