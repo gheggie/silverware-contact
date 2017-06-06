@@ -19,6 +19,7 @@
   ],
   "require": {
     "php": ">=5.6.0",
+    "silverware/countries": "~0.1@dev",
     "silverware/silverware": "~0.3@dev",
     "silverware/validator": "~0.1@dev"
   },
