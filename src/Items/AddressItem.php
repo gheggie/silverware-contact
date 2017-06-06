@@ -17,11 +17,11 @@
 
 namespace SilverWare\Contact\Items;
 
-use SilverStripe\Forms\CountryDropdownField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextField;
 use SilverStripe\i18n\i18n;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Countries\Forms\CountryDropdownField;
 
 /**
  * An extension of the contact item class for an address item.
@@ -128,17 +128,12 @@ class AddressItem extends ContactItem
                     'PostalCode',
                     $this->fieldLabel('PostalCode')
                 ),
-                $country = CountryDropdownField::create(
+                CountryDropdownField::create(
                     'Country',
                     $this->fieldLabel('Country')
-                )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder)
+                )
             ]
         );
-        
-        // Define Main Fields:
-        
-        $country->config()->default_country   = '';
-        $country->config()->default_to_locale = false;
         
         // Answer Field Objects:
         
