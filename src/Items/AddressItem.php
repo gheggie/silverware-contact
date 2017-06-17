@@ -22,6 +22,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\i18n\i18n;
 use SilverWare\Contact\Model\ContactItem;
 use SilverWare\Countries\Forms\CountryDropdownField;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the contact item class for an address item.
@@ -49,6 +50,14 @@ class AddressItem extends ContactItem
      * @config
      */
     private static $plural_name = 'Address Items';
+    
+    /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show an address';
     
     /**
      * Defines an ancestor class to hide from the admin interface.
@@ -112,25 +121,31 @@ class AddressItem extends ContactItem
         $fields->addFieldsToTab(
             'Root.Main',
             [
-                TextField::create(
-                    'Street',
-                    $this->fieldLabel('Street')
-                ),
-                TextField::create(
-                    'Suburb',
-                    $this->fieldLabel('Suburb')
-                ),
-                TextField::create(
-                    'StateTerritory',
-                    $this->fieldLabel('StateTerritory')
-                ),
-                TextField::create(
-                    'PostalCode',
-                    $this->fieldLabel('PostalCode')
-                ),
-                CountryDropdownField::create(
-                    'Country',
-                    $this->fieldLabel('Country')
+                FieldSection::create(
+                    'AddressSection',
+                    $this->fieldLabel('Address'),
+                    [
+                        TextField::create(
+                            'Street',
+                            $this->fieldLabel('Street')
+                        ),
+                        TextField::create(
+                            'Suburb',
+                            $this->fieldLabel('Suburb')
+                        ),
+                        TextField::create(
+                            'StateTerritory',
+                            $this->fieldLabel('StateTerritory')
+                        ),
+                        TextField::create(
+                            'PostalCode',
+                            $this->fieldLabel('PostalCode')
+                        ),
+                        CountryDropdownField::create(
+                            'Country',
+                            $this->fieldLabel('Country')
+                        )
+                    ]
                 )
             ]
         );
@@ -175,6 +190,7 @@ class AddressItem extends ContactItem
         
         $labels['Street'] = _t(__CLASS__ . '.STREET', 'Street');
         $labels['Suburb'] = _t(__CLASS__ . '.SUBURB', 'Suburb');
+        $labels['Address'] = _t(__CLASS__ . '.ADDRESS', 'Address');
         $labels['Country'] = _t(__CLASS__ . '.COUNTRY', 'Country');
         $labels['PostalCode'] = _t(__CLASS__ . '.POSTALCODE', 'Postal code');
         $labels['StateTerritory'] = _t(__CLASS__ . '.STATETERRITORY', 'State/Territory');
@@ -182,32 +198,6 @@ class AddressItem extends ContactItem
         // Answer Field Labels:
         
         return $labels;
-    }
-    
-    /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Address');
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->obj('FullAddress')->LimitCharacters(40);
     }
     
     /**

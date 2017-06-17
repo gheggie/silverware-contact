@@ -1,5 +1,9 @@
 # SilverWare Contact Module
 
+[![Latest Stable Version](https://poser.pugx.org/silverware/contact/v/stable)](https://packagist.org/packages/silverware/contact)
+[![Latest Unstable Version](https://poser.pugx.org/silverware/contact/v/unstable)](https://packagist.org/packages/silverware/contact)
+[![License](https://poser.pugx.org/silverware/contact/license)](https://packagist.org/packages/silverware/contact)
+
 Provides a contact page and contact component for use with [SilverWare][silverware].
 
 ## Contents

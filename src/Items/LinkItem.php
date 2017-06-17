@@ -18,10 +18,12 @@
 namespace SilverWare\Contact\Items;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
+use SilverStripe\Forms\SelectionGroup;
+use SilverStripe\Forms\SelectionGroup_Item;
 use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\TreeDropdownField;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
+use SilverWare\Forms\PageDropdownField;
 use Page;
 
 /**
@@ -35,6 +37,12 @@ use Page;
  */
 class LinkItem extends ContactItem
 {
+    /**
+     * Define constants.
+     */
+    const MODE_PAGE = 'page';
+    const MODE_URL  = 'url';
+    
     /**
      * Human-readable singular name.
      *
@@ -52,6 +60,14 @@ class LinkItem extends ContactItem
     private static $plural_name = 'Link Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show a link';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -67,6 +83,7 @@ class LinkItem extends ContactItem
      */
     private static $db = [
         'Name' => 'Varchar(255)',
+        'LinkTo' => 'Varchar(8)',
         'LinkURL' => 'Varchar(2048)',
         'OpenLinkInNewTab' => 'Boolean'
     ];
@@ -88,7 +105,9 @@ class LinkItem extends ContactItem
      * @config
      */
     private static $defaults = [
-        'FontIcon' => 'external-link'
+        'LinkTo' => 'page',
+        'FontIcon' => 'external-link',
+        'OpenLinkInNewTab' => 0
     ];
     
     /**
@@ -111,15 +130,27 @@ class LinkItem extends ContactItem
                     'Name',
                     $this->fieldLabel('Name')
                 ),
-                TreeDropdownField::create(
-                    'LinkPageID',
-                    $this->fieldLabel('LinkPageID'),
-                    Page::class
-                ),
-                TextField::create(
-                    'LinkURL',
-                    $this->fieldLabel('LinkURL')
-                )
+                SelectionGroup::create(
+                    'LinkTo',
+                    [
+                        SelectionGroup_Item::create(
+                            self::MODE_PAGE,
+                            PageDropdownField::create(
+                                'LinkPageID',
+                                ''
+                            ),
+                            $this->fieldLabel('Page')
+                        ),
+                        SelectionGroup_Item::create(
+                            self::MODE_URL,
+                            TextField::create(
+                                'LinkURL',
+                                ''
+                            ),
+                            $this->fieldLabel('URL')
+                        )
+                    ]
+                )->setTitle($this->fieldLabel('LinkTo'))
             ]
         );
         
@@ -127,12 +158,16 @@ class LinkItem extends ContactItem
         
         $fields->addFieldToTab(
             'Root.Options',
-            CompositeField::create([
-                CheckboxField::create(
-                    'OpenLinkInNewTab',
-                    $this->fieldLabel('OpenLinkInNewTab')
-                )
-            ])->setName('LinkItemOptions')->setTitle($this->i18n_singular_name())
+            FieldSection::create(
+                'LinkItemOptions',
+                $this->i18n_singular_name(),
+                [
+                    CheckboxField::create(
+                        'OpenLinkInNewTab',
+                        $this->fieldLabel('OpenLinkInNewTab')
+                    )
+                ]
+            )
         );
         
         // Answer Field Objects:
@@ -165,7 +200,10 @@ class LinkItem extends ContactItem
         
         // Define Field Labels:
         
+        $labels['URL'] = _t(__CLASS__ . '.URL', 'URL');
         $labels['Name'] = _t(__CLASS__ . '.NAME', 'Name');
+        $labels['Page'] = _t(__CLASS__ . '.PAGE', 'Page');
+        $labels['LinkTo'] = _t(__CLASS__ . '.LINKTO', 'Link to');
         $labels['LinkURL'] = _t(__CLASS__ . '.LINKURL', 'Link URL');
         $labels['LinkPageID'] = _t(__CLASS__ . '.LINKPAGE', 'Link page');
         $labels['OpenLinkInNewTab'] = _t(__CLASS__ . '.OPENLINKINNEWTAB', 'Open link in new tab');
@@ -182,53 +220,39 @@ class LinkItem extends ContactItem
     }
     
     /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Link');
-        
-        $this->OpenLinkInNewTab = 0;
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
+     * Answers the page link for the template.
      *
      * @return string
      */
-    public function getValue()
+    public function getPageLink()
     {
-        $parts = [$this->Name];
-        
-        if ($link = $this->Link) {
-            $parts[] = sprintf('(%s)', rtrim($link, '/'));
-        }
-        
-        return implode(' ', $parts);
-    }
-    
-    /**
-     * Answers the link for the template.
-     *
-     * @return string
-     */
-    public function getLink()
-    {
-        if ($this->LinkURL) {
+        if ($this->isURL() && $this->LinkURL) {
             return $this->dbObject('LinkURL')->URL();
         }
         
-        if ($this->LinkPageID) {
+        if ($this->isPage() && $this->LinkPageID) {
             return $this->LinkPage()->Link();
         }
+    }
+    
+    /**
+     * Answers true if the link is to a page.
+     *
+     * @return boolean
+     */
+    public function isPage()
+    {
+        return ($this->LinkTo == self::MODE_PAGE);
+    }
+    
+    /**
+     * Answers true if the link is to a URL.
+     *
+     * @return boolean
+     */
+    public function isURL()
+    {
+        return ($this->LinkTo == self::MODE_URL);
     }
     
     /**
@@ -238,7 +262,7 @@ class LinkItem extends ContactItem
      */
     public function isDisabled()
     {
-        if (!$this->Link) {
+        if (!$this->PageLink) {
             return true;
         }
         

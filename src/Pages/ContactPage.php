@@ -18,13 +18,13 @@
 namespace SilverWare\Contact\Pages;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
 use SilverWare\Contact\Forms\GridField\ContactMessageConfig;
 use SilverWare\Contact\Model\ContactMessage;
 use SilverWare\Contact\Model\ContactRecipient;
+use SilverWare\Forms\FieldSection;
 use Page;
 
 /**
@@ -163,41 +163,45 @@ class ContactPage extends Page
         $fields->addFieldsToTab(
             'Root.Options',
             [
-                CompositeField::create([
-                    TextField::create(
-                        'OnSendMessage',
-                        $this->fieldLabel('OnSendMessage')
-                    )->setRightTitle(
-                        _t(
-                            __CLASS__ . '.ONSENDMESSAGERIGHTTITLE',
-                            'Shown to the user after sending a message.'
+                FieldSection::create(
+                    'ContactPageOptions',
+                    $this->i18n_singular_name(),
+                    [
+                        TextField::create(
+                            'OnSendMessage',
+                            $this->fieldLabel('OnSendMessage')
+                        )->setRightTitle(
+                            _t(
+                                __CLASS__ . '.ONSENDMESSAGERIGHTTITLE',
+                                'Shown to the user after sending a message.'
+                            )
+                        ),
+                        CheckboxField::create(
+                            'SendViaEmail',
+                            $this->fieldLabel('SendViaEmail')
+                        ),
+                        CheckboxField::create(
+                            'ShowPhoneField',
+                            $this->fieldLabel('ShowPhoneField')
+                        ),
+                        CheckboxField::create(
+                            'ShowSubjectField',
+                            $this->fieldLabel('ShowSubjectField')
+                        ),
+                        CheckboxField::create(
+                            'ShowRecipientField',
+                            $this->fieldLabel('ShowRecipientField')
+                        ),
+                        CheckboxField::create(
+                            'PhoneRequired',
+                            $this->fieldLabel('PhoneRequired')
+                        ),
+                        TextField::create(
+                            'RecipientFieldLabel',
+                            $this->fieldLabel('RecipientFieldLabel')
                         )
-                    ),
-                    CheckboxField::create(
-                        'SendViaEmail',
-                        $this->fieldLabel('SendViaEmail')
-                    ),
-                    CheckboxField::create(
-                        'ShowPhoneField',
-                        $this->fieldLabel('ShowPhoneField')
-                    ),
-                    CheckboxField::create(
-                        'ShowSubjectField',
-                        $this->fieldLabel('ShowSubjectField')
-                    ),
-                    CheckboxField::create(
-                        'ShowRecipientField',
-                        $this->fieldLabel('ShowRecipientField')
-                    ),
-                    CheckboxField::create(
-                        'PhoneRequired',
-                        $this->fieldLabel('PhoneRequired')
-                    ),
-                    TextField::create(
-                        'RecipientFieldLabel',
-                        $this->fieldLabel('RecipientFieldLabel')
-                    )
-                ])->setName('ContactPageOptions')->setTitle($this->i18n_singular_name())
+                    ]
+                )
             ]
         );
         

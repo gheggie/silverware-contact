@@ -1,6 +1,6 @@
 <div class="phone">
   <% if $LinkNumber %>
-    <a href="$Link">$PhoneNumber</a>
+    <a href="$PhoneLink">$PhoneNumber</a>
   <% else %>
     $PhoneNumber
   <% end_if %>

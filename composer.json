@@ -19,9 +19,10 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "silverware/countries": "~0.1@dev",
-    "silverware/silverware": "~0.3@dev",
-    "silverware/validator": "~0.1@dev"
+    "silverware/countries": "^1.0",
+    "silverware/font-icons": "^1.0",
+    "silverware/silverware": "^1.0",
+    "silverware/validator": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -30,7 +31,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-master": "0.1.x-dev"
+      "dev-master": "1.0.x-dev"
     },
     "installer-name": "silverware-contact"
   },

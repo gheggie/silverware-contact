@@ -1,3 +1,3 @@
 <div class="skype">
-  <a href="$Link" title="$LinkTitle">$SkypeName</a>
+  <a href="$SkypeLink" title="$LinkTitle">$SkypeName</a>
 </div>

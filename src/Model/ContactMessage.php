@@ -23,7 +23,7 @@ use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\Security\Permission;
+use SilverWare\Security\CMSMainPermissions;
 use Page;
 
 /**
@@ -37,6 +37,8 @@ use Page;
  */
 class ContactMessage extends DataObject
 {
+    use CMSMainPermissions;
+    
     /**
      * Human-readable singular name.
      *
@@ -121,6 +123,8 @@ class ContactMessage extends DataObject
     
     /**
      * Defines the HTML template to use for emails.
+     *
+     * @var string
      */
     protected $HTMLTemplate = self::class;
     
@@ -173,7 +177,7 @@ class ContactMessage extends DataObject
             $fields->insertAfter(
                 TextField::create(
                     'Phone',
-                    _t(__CLASS__ . '.PHONE', 'Phone')
+                    $this->fieldLabel('Phone')
                 ),
                 'ReceivedFrom'
             );
@@ -187,7 +191,7 @@ class ContactMessage extends DataObject
             $fields->insertBefore(
                 TextField::create(
                     'Subject',
-                    _t(__CLASS__ . '.SUBJECT', 'Subject')
+                    $this->fieldLabel('Subject')
                 ),
                 'FormattedMessage'
             );
@@ -218,62 +222,15 @@ class ContactMessage extends DataObject
         
         // Define Field Labels:
         
-        $labels['ReceivedFrom'] = _t(__CLASS__ . '.FROM', 'From');
+        $labels['Phone'] = _t(__CLASS__ . '.PHONE', 'Phone');
+        $labels['Subject'] = _t(__CLASS__ . '.SUBJECT', 'Subject');
         $labels['Received'] = _t(__CLASS__ . '.RECEIVED', 'Received');
+        $labels['ReceivedFrom'] = _t(__CLASS__ . '.FROM', 'From');
         $labels['RecipientNames'] = _t(__CLASS__ . '.RECIPIENTS', 'Recipient(s)');
         
         // Answer Field Labels:
         
         return $labels;
-    }
-    
-    /**
-     * Answers true if the member can create a new instance of the receiver.
-     *
-     * @param Member $member Optional member object.
-     * @param array $context Context-specific data.
-     *
-     * @return boolean
-     */
-    public function canCreate($member = null, $context = [])
-    {
-       return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
-    }
-    
-    /**
-     * Answers true if the member can delete the receiver.
-     *
-     * @param Member $member
-     *
-     * @return boolean
-     */
-    public function canDelete($member = null)
-    {
-       return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
-    }
-    
-    /**
-     * Answers true if the member can edit the receiver.
-     *
-     * @param Member $member
-     *
-     * @return boolean
-     */
-    public function canEdit($member = null)
-    {
-       return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
-    }
-    
-    /**
-     * Answers true if the member can view the receiver.
-     *
-     * @param Member $member
-     *
-     * @return boolean
-     */
-    public function canView($member = null)
-    {
-       return Permission::check('CMS_ACCESS_CMSMain', 'any', $member);
     }
     
     /**
@@ -337,6 +294,10 @@ class ContactMessage extends DataObject
      */
     public function getRecipientNames()
     {
+        if (!$this->Recipients()->count()) {
+            return _t(__CLASS__ . 'NONE', 'None');
+        }
+        
         $recipients = [];
         
         foreach ($this->Recipients() as $recipient) {
@@ -454,7 +415,7 @@ class ContactMessage extends DataObject
         // Define Email Template Data:
         
         $email->setData([
-           'Message' => $this 
+           'Message' => $this
         ]);
         
         // Answer Email Object:

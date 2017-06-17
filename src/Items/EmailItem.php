@@ -19,9 +19,9 @@ namespace SilverWare\Contact\Items;
 
 use SilverStripe\Control\Email\Email;
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\EmailField;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the contact item class for a email item.
@@ -51,6 +51,14 @@ class EmailItem extends ContactItem
     private static $plural_name = 'Email Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show an email address';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -77,7 +85,9 @@ class EmailItem extends ContactItem
      * @config
      */
     private static $defaults = [
-        'FontIcon' => 'envelope'
+        'FontIcon' => 'envelope',
+        'LinkEmail' => 1,
+        'ProtectEmail' => 1
     ];
     
     /**
@@ -87,7 +97,7 @@ class EmailItem extends ContactItem
      * @config
      */
     private static $casting = [
-        'Link' => 'HTMLFragment',
+        'EmailLink' => 'HTMLFragment',
         'EmailAddress' => 'HTMLFragment'
     ];
     
@@ -118,16 +128,20 @@ class EmailItem extends ContactItem
         
         $fields->addFieldToTab(
             'Root.Options',
-            CompositeField::create([
-                CheckboxField::create(
-                    'LinkEmail',
-                    $this->fieldLabel('LinkEmail')
-                ),
-                CheckboxField::create(
-                    'ProtectEmail',
-                    $this->fieldLabel('ProtectEmail')
-                )
-            ])->setName('EmailItemOptions')->setTitle($this->i18n_singular_name())
+            FieldSection::create(
+                'EmailItemOptions',
+                $this->i18n_singular_name(),
+                [
+                    CheckboxField::create(
+                        'LinkEmail',
+                        $this->fieldLabel('LinkEmail')
+                    ),
+                    CheckboxField::create(
+                        'ProtectEmail',
+                        $this->fieldLabel('ProtectEmail')
+                    )
+                ]
+            )
         );
         
         // Answer Field Objects:
@@ -170,40 +184,11 @@ class EmailItem extends ContactItem
     }
     
     /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Email');
-        
-        $this->LinkEmail = 1;
-        $this->ProtectEmail = 1;
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->Email;
-    }
-    
-    /**
      * Answers the email link for the template.
      *
      * @return string
      */
-    public function getLink()
+    public function getEmailLink()
     {
         return sprintf('mailto:%s', ($this->ProtectEmail ? Email::obfuscate($this->Email, 'hex') : $this->Email));
     }

@@ -18,19 +18,14 @@
 namespace SilverWare\Contact\Model;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\RequiredFields;
-use SilverStripe\Forms\TextField;
-use SilverWare\Extensions\RenderableExtension;
+use SilverStripe\View\SSViewer;
 use SilverWare\FontIcons\Extensions\FontIconExtension;
+use SilverWare\Forms\FieldSection;
 use SilverWare\Model\Component;
-use SilverWare\ORM\MultiClassObject;
-use SilverWare\View\GridAware;
-use SilverWare\View\Renderable;
-use SilverWare\View\ViewClasses;
 
 /**
- * An extension of the multi-class object class for a contact item.
+ * An extension of the component class for a contact item.
  *
  * @package SilverWare\Contact\Model
  * @author Colin Tucker <colin@praxis.net.au>
@@ -38,12 +33,8 @@ use SilverWare\View\ViewClasses;
  * @license https://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @link https://github.com/praxisnetau/silverware-contact
  */
-class ContactItem extends MultiClassObject
+class ContactItem extends Component
 {
-    use GridAware;
-    use Renderable;
-    use ViewClasses;
-    
     /**
      * Human-readable singular name.
      *
@@ -61,12 +52,36 @@ class ContactItem extends MultiClassObject
     private static $plural_name = 'Items';
     
     /**
-     * Defines the default sort field and order for this object.
+     * Description of this object.
      *
      * @var string
      * @config
      */
-    private static $default_sort = 'Sort';
+    private static $description = '';
+    
+    /**
+     * Icon file for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $icon = 'silverware-contact/admin/client/dist/images/icons/ContactItem.png';
+    
+    /**
+     * Defines an ancestor class to hide from the admin interface.
+     *
+     * @var string
+     * @config
+     */
+    private static $hide_ancestor = Component::class;
+    
+    /**
+     * Defines the allowed children for this object.
+     *
+     * @var array|string
+     * @config
+     */
+    private static $allowed_children = 'none';
     
     /**
      * Maps field names to field types for this object.
@@ -75,19 +90,7 @@ class ContactItem extends MultiClassObject
      * @config
      */
     private static $db = [
-        'Sort' => 'Int',
-        'Title' => 'Varchar(255)',
         'HideTitle' => 'Boolean'
-    ];
-    
-    /**
-     * Defines the has-one associations for this object.
-     *
-     * @var array
-     * @config
-     */
-    private static $has_one = [
-        'Parent' => Component::class
     ];
     
     /**
@@ -101,27 +104,13 @@ class ContactItem extends MultiClassObject
     ];
     
     /**
-     * Defines the summary fields of this object.
-     *
-     * @var array
-     * @config
-     */
-    private static $summary_fields = [
-        'Type',
-        'Title',
-        'Value',
-        'Disabled.Nice'
-    ];
-    
-    /**
      * Defines the extension classes to apply to this object.
      *
      * @var array
      * @config
      */
     private static $extensions = [
-        FontIconExtension::class,
-        RenderableExtension::class
+        FontIconExtension::class
     ];
     
     /**
@@ -135,33 +124,23 @@ class ContactItem extends MultiClassObject
         
         $fields = parent::getCMSFields();
         
-        // Create Field Objects:
+        // Create Options Fields:
         
-        if ($this->isInDB()) {
-            
-            // Create Main Fields:
-            
-            $fields->addFieldToTab(
-                'Root.Main',
-                TextField::create(
-                    'Title',
-                    $this->fieldLabel('Title')
+        $fields->addFieldsToTab(
+            'Root.Options',
+            [
+                FieldSection::create(
+                    'TitleOptions',
+                    $this->fieldLabel('TitleOptions'),
+                    [
+                        CheckboxField::create(
+                            'HideTitle',
+                            $this->fieldLabel('HideTitle')
+                        )
+                    ]
                 )
-            );
-            
-            // Create Options Fields:
-            
-            $fields->addFieldToTab(
-                'Root.Options',
-                CompositeField::create([
-                    CheckboxField::create(
-                        'HideTitle',
-                        $this->fieldLabel('HideTitle')
-                    )
-                ])->setName('TitleOptions')->setTitle($this->fieldLabel('TitleOptions'))
-            );
-            
-        }
+            ]
+        );
         
         // Answer Field Objects:
         
@@ -195,8 +174,6 @@ class ContactItem extends MultiClassObject
         
         // Define Field Labels:
         
-        $labels['Title'] = _t(__CLASS__ . '.TITLE', 'Title');
-        $labels['Value'] = _t(__CLASS__ . '.VALUE', 'Value');
         $labels['HideTitle'] = _t(__CLASS__ . '.HIDETITLE', 'Hide title');
         $labels['TitleOptions'] = _t(__CLASS__ . '.TITLE', 'Title');
         
@@ -206,37 +183,25 @@ class ContactItem extends MultiClassObject
     }
     
     /**
-     * Answers the title of the receiver for the CMS interface.
+     * Answers the heading tag for the receiver.
      *
      * @return string
      */
-    public function getTitle()
+    public function getHeadingTag()
     {
-        return $this->getField('Title');
+        return $this->getParent()->HeadingTag;
     }
     
     /**
-     * Answers the value of the receiver for the CMS interface.
+     * Answers true if the font icon is to be shown.
      *
-     * @return string
+     * @return boolean
      */
-    public function getValue()
+    public function getShowIcon()
     {
-        return null;
-    }
-    
-    /**
-     * Answers the default style ID for the HTML template.
-     *
-     * @return string
-     */
-    public function getDefaultStyleID()
-    {
-        return sprintf(
-            '%s_%s',
-            $this->Parent()->getHTMLID(),
-            $this->getClassNameWithID()
-        );
+        if ($parent = $this->getParent()) {
+            return (boolean) $parent->ShowIcons;
+        }
     }
     
     /**
@@ -250,16 +215,6 @@ class ContactItem extends MultiClassObject
     }
     
     /**
-     * Answers the heading tag for the receiver.
-     *
-     * @return string
-     */
-    public function getHeadingTag()
-    {
-        return $this->Parent()->HeadingTag;
-    }
-    
-    /**
      * Answers true to enable fixed width mode.
      *
      * @return boolean
@@ -267,18 +222,6 @@ class ContactItem extends MultiClassObject
     public function getFontIconFixedWidth()
     {
         return true;
-    }
-    
-    /**
-     * Answers true if the font icon is to be shown.
-     *
-     * @return boolean
-     */
-    public function getShowIcon()
-    {
-        if ($parent = $this->Parent()) {
-            return (boolean) $parent->ShowIcons;
-        }
     }
     
     /**
@@ -303,6 +246,8 @@ class ContactItem extends MultiClassObject
      */
     public function renderContent()
     {
-        return $this->renderWith(static::class);
+        if (SSViewer::hasTemplate(static::class)) {
+            return $this->renderWith(static::class);
+        }
     }
 }

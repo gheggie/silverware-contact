@@ -1,6 +1,6 @@
 <div class="email">
   <% if $LinkEmail %>
-    <a href="$Link">$EmailAddress</a>
+    <a href="$EmailLink">$EmailAddress</a>
   <% else %>
     $EmailAddress
   <% end_if %>

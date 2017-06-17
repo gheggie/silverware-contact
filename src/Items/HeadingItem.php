@@ -17,12 +17,9 @@
 
 namespace SilverWare\Contact\Items;
 
-use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\TextField;
-use SilverWare\Contact\Components\ContactComponent;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the contact item class for a heading item.
@@ -52,6 +49,14 @@ class HeadingItem extends ContactItem
     private static $plural_name = 'Heading Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show a heading';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -66,9 +71,7 @@ class HeadingItem extends ContactItem
      * @config
      */
     private static $db = [
-        'Text' => 'Varchar(255)',
-        'HeadingLevel' => 'Varchar(2)',
-        'ShowFontIcon' => 'Boolean'
+        'HeadingLevel' => 'Varchar(2)'
     ];
     
     /**
@@ -77,7 +80,7 @@ class HeadingItem extends ContactItem
      * @var array
      * @config
      */
-    private static $heading_level_default = 'h3';
+    private static $heading_level_default = 'h4';
     
     /**
      * Answers a list of field objects for the CMS interface.
@@ -90,18 +93,6 @@ class HeadingItem extends ContactItem
         
         $fields = parent::getCMSFields();
         
-        // Create Main Fields:
-        
-        $fields->addFieldsToTab(
-            'Root.Main',
-            [
-                TextField::create(
-                    'Text',
-                    $this->fieldLabel('Text')
-                )
-            ]
-        );
-        
         // Define Placeholders:
         
         $placeholder = _t(__CLASS__ . '.DROPDOWNDEFAULT', '(default)');
@@ -110,40 +101,22 @@ class HeadingItem extends ContactItem
         
         $fields->addFieldToTab(
             'Root.Style',
-            CompositeField::create([
-                DropdownField::create(
-                    'HeadingLevel',
-                    $this->fieldLabel('HeadingLevel'),
-                    ContactComponent::singleton()->getTitleLevelOptions()
-                )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder),
-            ])->setName('HeadingItemStyle')->setTitle($this->i18n_singular_name())
-        );
-        
-        // Create Options Fields:
-        
-        $fields->addFieldToTab(
-            'Root.Options',
-            CompositeField::create([
-                CheckboxField::create(
-                    'ShowFontIcon',
-                    $this->fieldLabel('ShowFontIcon')
-                )
-            ])->setName('HeadingItemOptions')->setTitle($this->i18n_singular_name())
+            FieldSection::create(
+                'HeadingItemStyle',
+                $this->i18n_singular_name(),
+                [
+                    DropdownField::create(
+                        'HeadingLevel',
+                        $this->fieldLabel('HeadingLevel'),
+                        $this->getParent()->getTitleLevelOptions()
+                    )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder),
+                ]
+            )
         );
         
         // Answer Field Objects:
         
         return $fields;
-    }
-    
-    /**
-     * Answers a validator for the CMS interface.
-     *
-     * @return RequiredFields
-     */
-    public function getCMSValidator()
-    {
-        return parent::getCMSValidator()->addRequiredField('Text');
     }
     
     /**
@@ -161,42 +134,11 @@ class HeadingItem extends ContactItem
         
         // Define Field Labels:
         
-        $labels['Text'] = _t(__CLASS__ . '.TEXT', 'Text');
         $labels['HeadingLevel'] = _t(__CLASS__ . '.HEADINGLEVEL', 'Heading level');
-        $labels['ShowFontIcon'] = _t(__CLASS__ . '.SHOWFONTICONINHEADING', 'Show font icon in heading');
         
         // Answer Field Labels:
         
         return $labels;
-    }
-    
-    /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Heading');
-        
-        $this->HideTitle = 1;
-        $this->ShowFontIcon = 1;
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->Text;
     }
     
     /**

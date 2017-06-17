@@ -18,10 +18,10 @@
 namespace SilverWare\Contact\Items;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextField;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the contact item class for a Skype item.
@@ -57,6 +57,14 @@ class SkypeItem extends ContactItem
     private static $plural_name = 'Skype Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show a Skype link';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -83,7 +91,8 @@ class SkypeItem extends ContactItem
      * @config
      */
     private static $defaults = [
-        'FontIcon' => 'skype'
+        'FontIcon' => 'skype',
+        'VideoEnabled' => 0
     ];
     
     /**
@@ -118,12 +127,16 @@ class SkypeItem extends ContactItem
         
         $fields->addFieldToTab(
             'Root.Options',
-            CompositeField::create([
-                CheckboxField::create(
-                    'VideoEnabled',
-                    $this->fieldLabel('VideoEnabled')
-                )
-            ])->setName('SkypeItemOptions')->setTitle($this->i18n_singular_name())
+            FieldSection::create(
+                'SkypeItemOptions',
+                $this->i18n_singular_name(),
+                [
+                    CheckboxField::create(
+                        'VideoEnabled',
+                        $this->fieldLabel('VideoEnabled')
+                    )
+                ]
+            )
         );
         
         // Answer Field Objects:
@@ -166,39 +179,11 @@ class SkypeItem extends ContactItem
     }
     
     /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Skype');
-        
-        $this->VideoEnabled = 0;
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->SkypeName;
-    }
-    
-    /**
      * Answers the Skype link for the template.
      *
      * @return string
      */
-    public function getLink()
+    public function getSkypeLink()
     {
         return sprintf(
             'skype:%s?%s&video=%s',

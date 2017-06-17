@@ -48,6 +48,15 @@ class FaxItem extends ContactItem
     private static $plural_name = 'Fax Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show a fax number';
+    
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -133,31 +142,5 @@ class FaxItem extends ContactItem
         // Answer Field Labels:
         
         return $labels;
-    }
-    
-    /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Fax');
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->FaxNumber;
     }
 }

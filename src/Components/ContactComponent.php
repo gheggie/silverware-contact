@@ -18,13 +18,10 @@
 namespace SilverWare\Contact\Components;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\GridField\GridField;
-use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
-use SilverStripe\Forms\Tab;
 use SilverWare\Components\BaseComponent;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the base component class for a contact component.
@@ -89,16 +86,6 @@ class ContactComponent extends BaseComponent
     ];
     
     /**
-     * Defines the has-many associations for this object.
-     *
-     * @var array
-     * @config
-     */
-    private static $has_many = [
-        'Items' => ContactItem::class
-    ];
-    
-    /**
      * Defines the default values for the fields of this object.
      *
      * @var array
@@ -114,7 +101,9 @@ class ContactComponent extends BaseComponent
      * @var array|string
      * @config
      */
-    private static $allowed_children = 'none';
+    private static $allowed_children = [
+        ContactItem::class
+    ];
     
     /**
      * Defines the default heading level to use.
@@ -135,28 +124,6 @@ class ContactComponent extends BaseComponent
         
         $fields = parent::getCMSFields();
         
-        // Insert Items Tab:
-        
-        $fields->insertAfter(
-            Tab::create(
-                'Items',
-                $this->fieldLabel('Items')
-            ),
-            'Main'
-        );
-        
-        // Add Items Grid Field to Tab:
-        
-        $fields->addFieldToTab(
-            'Root.Items',
-            GridField::create(
-                'Items',
-                $this->fieldLabel('Items'),
-                $this->Items(),
-                GridFieldConfig_RecordEditor::create()
-            )
-        );
-        
         // Define Placeholder:
         
         $placeholder = _t(__CLASS__ . '.DROPDOWNDEFAULT', '(default)');
@@ -166,13 +133,17 @@ class ContactComponent extends BaseComponent
         $fields->addFieldsToTab(
             'Root.Style',
             [
-                CompositeField::create([
-                    DropdownField::create(
-                        'HeadingLevel',
-                        $this->fieldLabel('HeadingLevel'),
-                        $this->getTitleLevelOptions()
-                    )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder),
-                ])->setName('ContactComponentStyle')->setTitle($this->i18n_singular_name())
+                FieldSection::create(
+                    'ContactComponentStyle',
+                    $this->i18n_singular_name(),
+                    [
+                        DropdownField::create(
+                            'HeadingLevel',
+                            $this->fieldLabel('HeadingLevel'),
+                            $this->getTitleLevelOptions()
+                        )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder),
+                    ]
+                )
             ]
         );
         
@@ -181,12 +152,16 @@ class ContactComponent extends BaseComponent
         $fields->addFieldsToTab(
             'Root.Options',
             [
-                CompositeField::create([
-                    CheckboxField::create(
-                        'ShowIcons',
-                        $this->fieldLabel('ShowIcons')
-                    )
-                ])->setName('ContactComponentOptions')->setTitle($this->i18n_singular_name())
+                FieldSection::create(
+                    'ContactComponentOptions',
+                    $this->i18n_singular_name(),
+                    [
+                        CheckboxField::create(
+                            'ShowIcons',
+                            $this->fieldLabel('ShowIcons')
+                        )
+                    ]
+                )
             ]
         );
         
@@ -233,13 +208,23 @@ class ContactComponent extends BaseComponent
     }
     
     /**
+     * Answers a list of all items within the receiver.
+     *
+     * @return DataList
+     */
+    public function getItems()
+    {
+        return $this->AllChildren();
+    }
+    
+    /**
      * Answers a list of the enabled items within the receiver.
      *
      * @return ArrayList
      */
     public function getEnabledItems()
     {
-        return $this->Items()->filterByCallback(function ($item) {
+        return $this->getItems()->filterByCallback(function ($item) {
             return $item->isEnabled();
         });
     }
@@ -268,6 +253,22 @@ class ContactComponent extends BaseComponent
         }
         
         return $this->config()->heading_level_default;
+    }
+    
+    /**
+     * Answers an array of custom CSS required for the template.
+     *
+     * @return array
+     */
+    public function getCustomCSS()
+    {
+        $css = parent::getCustomCSS();
+        
+        foreach ($this->getEnabledItems() as $item) {
+            $css = array_merge($css, $item->getCustomCSS());
+        }
+        
+        return $css;
     }
     
     /**

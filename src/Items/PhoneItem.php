@@ -18,9 +18,9 @@
 namespace SilverWare\Contact\Items;
 
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\TextField;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Forms\FieldSection;
 
 /**
  * An extension of the contact item class for a phone item.
@@ -50,6 +50,14 @@ class PhoneItem extends ContactItem
     private static $plural_name = 'Phone Items';
     
     /**
+     * Description of this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $description = 'A contact item to show a phone number';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
@@ -76,7 +84,8 @@ class PhoneItem extends ContactItem
      * @config
      */
     private static $defaults = [
-        'FontIcon' => 'phone'
+        'FontIcon' => 'phone',
+        'LinkNumber' => 1
     ];
     
     /**
@@ -115,12 +124,16 @@ class PhoneItem extends ContactItem
         
         $fields->addFieldToTab(
             'Root.Options',
-            CompositeField::create([
-                CheckboxField::create(
-                    'LinkNumber',
-                    $this->fieldLabel('LinkNumber')
-                )
-            ])->setName('PhoneItemOptions')->setTitle($this->i18n_singular_name())
+            FieldSection::create(
+                'PhoneItemOptions',
+                $this->i18n_singular_name(),
+                [
+                    CheckboxField::create(
+                        'LinkNumber',
+                        $this->fieldLabel('LinkNumber')
+                    )
+                ]
+            )
         );
         
         // Answer Field Objects:
@@ -153,41 +166,13 @@ class PhoneItem extends ContactItem
         
         // Define Field Labels:
         
+        $labels['LinkNumber'] = _t(__CLASS__ . '.LINKNUMBER', 'Link number');
         $labels['PhoneNumber'] = _t(__CLASS__ . '.PHONENUMBER', 'Phone number');
         $labels['CallToNumber'] = _t(__CLASS__ . '.CALLTONUMBER', 'Call to number');
-        $labels['LinkNumber'] = _t(__CLASS__ . '.LINKNUMBER', 'Link number');
         
         // Answer Field Labels:
         
         return $labels;
-    }
-    
-    /**
-     * Populates the default values for the fields of the receiver.
-     *
-     * @return void
-     */
-    public function populateDefaults()
-    {
-        // Populate Defaults (from parent):
-        
-        parent::populateDefaults();
-        
-        // Populate Defaults:
-        
-        $this->Title = _t(__CLASS__ . '.DEFAULTTITLE', 'Phone');
-        
-        $this->LinkNumber = 1;
-    }
-    
-    /**
-     * Answers the value of the item for the CMS interface.
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->PhoneNumber;
     }
     
     /**
@@ -201,12 +186,12 @@ class PhoneItem extends ContactItem
     }
     
     /**
-     * Answers the phone number link for the template.
+     * Answers the phone link for the template.
      *
      * @return string
      */
-    public function getLink()
+    public function getPhoneLink()
     {
-        return sprintf('callto:%s', $this->getLinkableNumber());
+        return sprintf('callto:%s', $this->LinkableNumber);
     }
 }

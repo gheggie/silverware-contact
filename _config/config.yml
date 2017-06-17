@@ -10,7 +10,7 @@ SilverStripe\CMS\Controllers\ContentController:
   required_css:
     - silverware-contact/client/dist/styles/bundle.css
 
-# Configure Admin Extensions:
+# Configure Admin Requirements:
 
 SilverStripe\Admin\LeftAndMain:
   extra_requirements_css:
