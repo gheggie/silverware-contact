@@ -19,6 +19,8 @@ Provides a contact page and contact component for use with [SilverWare][silverwa
 ## Requirements
 
 - [SilverWare][silverware]
+- [SilverWare Countries][silverware-countries]
+- [SilverWare Font Icons][silverware-font-icons]
 - [SilverWare Validator][silverware-validator]
 
 ## Installation
@@ -95,6 +97,8 @@ Please see [contributing](CONTRIBUTING.md) for more information.
 [BSD-3-Clause](LICENSE.md) &copy; Praxis Interactive
 
 [silverware]: https://github.com/praxisnetau/silverware
+[silverware-countries]: https://github.com/praxisnetau/silverware-countries
+[silverware-font-icons]: https://github.com/praxisnetau/silverware-font-icons
 [silverware-validator]: https://github.com/praxisnetau/silverware-validator
 [composer]: https://getcomposer.org
 [issues]: https://github.com/praxisnetau/silverware-contact/issues
