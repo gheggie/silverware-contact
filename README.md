@@ -66,12 +66,13 @@ The following items are provided with the component:
 - `FaxItem`
 - `HeadingItem`
 - `LinkItem`
+- `LinksItem`
 - `PhoneItem`
 - `SkypeItem`
 - `TextItem`
 
 Simply add the `ContactComponent` where desired in your template or layout, and then
-add your items via the "Items" tab. The item titles will also show font icons if the
+add your items as children via the site tree. The item titles will also show font icons if the
 option "Show icons" is checked on the "Options" tab of `ContactComponent`.
 
 ## Issues
