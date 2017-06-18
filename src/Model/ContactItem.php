@@ -57,7 +57,7 @@ class ContactItem extends Component
      * @var string
      * @config
      */
-    private static $description = '';
+    private static $description = 'A component which represents a contact item';
     
     /**
      * Icon file for this object.
