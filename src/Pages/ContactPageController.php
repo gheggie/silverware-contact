@@ -57,8 +57,6 @@ class ContactPageController extends PageController
     /**
      * Answers the form object for the HTML template.
      *
-     * @todo Add spam protection and validation.
-     *
      * @return Form
      */
     public function Form()
