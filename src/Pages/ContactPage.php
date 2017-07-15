@@ -164,8 +164,8 @@ class ContactPage extends Page
             'Root.Options',
             [
                 FieldSection::create(
-                    'ContactPageOptions',
-                    $this->i18n_singular_name(),
+                    'ContactOptions',
+                    $this->fieldLabel('ContactOptions'),
                     [
                         TextField::create(
                             'OnSendMessage',
@@ -235,6 +235,7 @@ class ContactPage extends Page
         $labels['ShowSubjectField'] = _t(__CLASS__ . '.SHOWSUBJECTFIELD', 'Show subject field');
         $labels['ShowRecipientField'] = _t(__CLASS__ . '.SHOWRECIPIENTFIELD', 'Show recipient field');
         $labels['RecipientFieldLabel'] = _t(__CLASS__ . '.RECIPIENTFIELDLABEL', 'Recipient field label');
+        $labels['ContactOptions'] = _t(__CLASS__ . '.CONTACT', 'Contact');
         
         // Answer Field Labels:
         

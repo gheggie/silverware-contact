@@ -128,8 +128,8 @@ class SkypeItem extends ContactItem
         $fields->addFieldToTab(
             'Root.Options',
             FieldSection::create(
-                'SkypeItemOptions',
-                $this->i18n_singular_name(),
+                'SkypeOptions',
+                $this->fieldLabel('SkypeOptions'),
                 [
                     CheckboxField::create(
                         'VideoEnabled',
@@ -172,6 +172,7 @@ class SkypeItem extends ContactItem
         $labels['SkypeName'] = _t(__CLASS__ . '.SKYPENAME', 'Skype name');
         $labels['SkypeMode'] = _t(__CLASS__ . '.SKYPEMODE', 'Skype mode');
         $labels['VideoEnabled'] = _t(__CLASS__ . '.VIDEOENABLED', 'Video enabled');
+        $labels['SkypeOptions'] = _t(__CLASS__ . '.SKYPE', 'Skype');
         
         // Answer Field Label:
         

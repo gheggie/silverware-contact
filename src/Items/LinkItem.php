@@ -159,8 +159,8 @@ class LinkItem extends ContactItem
         $fields->addFieldToTab(
             'Root.Options',
             FieldSection::create(
-                'LinkItemOptions',
-                $this->i18n_singular_name(),
+                'LinkOptions',
+                $this->fieldLabel('LinkOptions'),
                 [
                     CheckboxField::create(
                         'OpenLinkInNewTab',
@@ -207,6 +207,7 @@ class LinkItem extends ContactItem
         $labels['LinkURL'] = _t(__CLASS__ . '.LINKURL', 'Link URL');
         $labels['LinkPageID'] = _t(__CLASS__ . '.LINKPAGE', 'Link page');
         $labels['OpenLinkInNewTab'] = _t(__CLASS__ . '.OPENLINKINNEWTAB', 'Open link in new tab');
+        $labels['LinkOptions'] = _t(__CLASS__ . '.LINK', 'Link');
         
         // Define Relation Labels:
         

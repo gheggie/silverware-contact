@@ -134,8 +134,8 @@ class ContactComponent extends BaseComponent
             'Root.Style',
             [
                 FieldSection::create(
-                    'ContactComponentStyle',
-                    $this->i18n_singular_name(),
+                    'ContactStyle',
+                    $this->fieldLabel('ContactStyle'),
                     [
                         DropdownField::create(
                             'HeadingLevel',
@@ -153,8 +153,8 @@ class ContactComponent extends BaseComponent
             'Root.Options',
             [
                 FieldSection::create(
-                    'ContactComponentOptions',
-                    $this->i18n_singular_name(),
+                    'ContactOptions',
+                    $this->fieldLabel('ContactOptions'),
                     [
                         CheckboxField::create(
                             'ShowIcons',
@@ -187,6 +187,7 @@ class ContactComponent extends BaseComponent
         
         $labels['ShowIcons'] = _t(__CLASS__ . '.SHOWICONS', 'Show icons');
         $labels['HeadingLevel'] = _t(__CLASS__ . '.HEADINGLEVEL', 'Heading level');
+        $labels['ContactStyle'] = $labels['ContactOptions'] = _t(__CLASS__ . '.CONTACT', 'Contact');
         
         // Answer Field Labels:
         

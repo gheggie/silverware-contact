@@ -129,8 +129,8 @@ class EmailItem extends ContactItem
         $fields->addFieldToTab(
             'Root.Options',
             FieldSection::create(
-                'EmailItemOptions',
-                $this->i18n_singular_name(),
+                'EmailOptions',
+                $this->fieldLabel('EmailOptions'),
                 [
                     CheckboxField::create(
                         'LinkEmail',
@@ -174,7 +174,7 @@ class EmailItem extends ContactItem
         
         // Define Field Labels:
         
-        $labels['Email'] = _t(__CLASS__ . '.EMAIL', 'Email');
+        $labels['Email'] = $labels['EmailOptions'] = _t(__CLASS__ . '.EMAIL', 'Email');
         $labels['LinkEmail'] = _t(__CLASS__ . '.LINKEMAIL', 'Link email');
         $labels['ProtectEmail'] = _t(__CLASS__ . '.PROTECTEMAIL', 'Protect email from spam bots (recommended)');
         

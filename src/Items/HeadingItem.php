@@ -102,8 +102,8 @@ class HeadingItem extends ContactItem
         $fields->addFieldToTab(
             'Root.Style',
             FieldSection::create(
-                'HeadingItemStyle',
-                $this->i18n_singular_name(),
+                'HeadingStyle',
+                $this->fieldLabel('HeadingStyle'),
                 [
                     DropdownField::create(
                         'HeadingLevel',
@@ -134,6 +134,7 @@ class HeadingItem extends ContactItem
         
         // Define Field Labels:
         
+        $labels['HeadingStyle'] = _t(__CLASS__ . '.HEADING', 'Heading');
         $labels['HeadingLevel'] = _t(__CLASS__ . '.HEADINGLEVEL', 'Heading level');
         
         // Answer Field Labels:

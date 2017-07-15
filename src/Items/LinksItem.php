@@ -142,8 +142,8 @@ class LinksItem extends ContactItem
             'Root.Style',
             [
                 FieldSection::create(
-                    'IconNavigationStyle',
-                    $this->i18n_singular_name(),
+                    'IconStyle',
+                    $this->fieldLabel('IconStyle'),
                     [
                         DropdownField::create(
                             'IconSize',
@@ -176,6 +176,7 @@ class LinksItem extends ContactItem
         // Define Field Labels:
         
         $labels['IconSize'] = _t(__CLASS__ . '.ICONSIZEINPIXELS', 'Icon size (in pixels)');
+        $labels['IconStyle'] = _t(__CLASS__ . '.ICON', 'Icon');
         
         // Answer Field Labels:
         

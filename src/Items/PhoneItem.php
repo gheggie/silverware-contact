@@ -125,8 +125,8 @@ class PhoneItem extends ContactItem
         $fields->addFieldToTab(
             'Root.Options',
             FieldSection::create(
-                'PhoneItemOptions',
-                $this->i18n_singular_name(),
+                'PhoneOptions',
+                $this->fieldLabel('PhoneOptions'),
                 [
                     CheckboxField::create(
                         'LinkNumber',
@@ -169,6 +169,7 @@ class PhoneItem extends ContactItem
         $labels['LinkNumber'] = _t(__CLASS__ . '.LINKNUMBER', 'Link number');
         $labels['PhoneNumber'] = _t(__CLASS__ . '.PHONENUMBER', 'Phone number');
         $labels['CallToNumber'] = _t(__CLASS__ . '.CALLTONUMBER', 'Call to number');
+        $labels['PhoneOptions'] = _t(__CLASS__ . '.PHONE', 'Phone');
         
         // Answer Field Labels:
         
