@@ -19,7 +19,6 @@ namespace SilverWare\Contact\Model;
 
 use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\RequiredFields;
-use SilverStripe\View\SSViewer;
 use SilverWare\FontIcons\Extensions\FontIconExtension;
 use SilverWare\Forms\FieldSection;
 use SilverWare\Model\Component;
@@ -225,6 +224,16 @@ class ContactItem extends Component
     }
     
     /**
+     * Answers null to avoid problems with '$Content' double-ups in the template.
+     *
+     * @return null
+     */
+    public function getContent()
+    {
+        return null;
+    }
+    
+    /**
      * Renders the object for the HTML template.
      *
      * @param string $layout Page layout passed from template.
@@ -246,8 +255,8 @@ class ContactItem extends Component
      */
     public function renderContent()
     {
-        if (SSViewer::hasTemplate(static::class)) {
-            return $this->renderWith(static::class);
+        if ($this->getTemplate() != self::class) {
+            return $this->renderWith($this->getTemplate());
         }
     }
 }

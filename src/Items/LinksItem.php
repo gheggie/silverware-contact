@@ -228,7 +228,7 @@ class LinksItem extends ContactItem
      */
     public function getLinks()
     {
-        return $this->AllChildren();
+        return $this->getAllChildren();
     }
     
     /**
