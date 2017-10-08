@@ -14,13 +14,3 @@
  * @license https://opensource.org/licenses/BSD-3-Clause BSD-3-Clause
  * @link https://github.com/praxisnetau/silverware-contact
  */
-
-// Define Module Constants:
-
-if (!defined('SILVERWARE_CONTACT_DIR')) {
-    define('SILVERWARE_CONTACT_DIR', basename(__DIR__));
-}
-
-if (!defined('SILVERWARE_CONTACT_PATH')) {
-    define('SILVERWARE_CONTACT_PATH', realpath(__DIR__));
-}
