@@ -21,6 +21,7 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\DropdownField;
 use SilverWare\Components\BaseComponent;
 use SilverWare\Contact\Model\ContactItem;
+use SilverWare\Extensions\Style\AlignmentStyle;
 use SilverWare\Forms\FieldSection;
 
 /**
@@ -34,6 +35,12 @@ use SilverWare\Forms\FieldSection;
  */
 class ContactComponent extends BaseComponent
 {
+    /**
+     * Define constants.
+     */
+    const ITEM_MODE_BLOCK  = 'block';
+    const ITEM_MODE_INLINE = 'inline';
+    
     /**
      * Human-readable singular name.
      *
@@ -64,7 +71,7 @@ class ContactComponent extends BaseComponent
      * @var string
      * @config
      */
-    private static $icon = 'silverware-contact/admin/client/dist/images/icons/ContactComponent.png';
+    private static $icon = 'silverware/contact: admin/client/dist/images/icons/ContactComponent.png';
     
     /**
      * Defines an ancestor class to hide from the admin interface.
@@ -82,6 +89,7 @@ class ContactComponent extends BaseComponent
      */
     private static $db = [
         'HeadingLevel' => 'Varchar(2)',
+        'ItemMode' => 'Varchar(8)',
         'ShowIcons' => 'Boolean'
     ];
     
@@ -104,6 +112,24 @@ class ContactComponent extends BaseComponent
     private static $allowed_children = [
         ContactItem::class
     ];
+    
+    /**
+     * Defines the extension classes to apply to this object.
+     *
+     * @var array
+     * @config
+     */
+    private static $extensions = [
+        AlignmentStyle::class
+    ];
+    
+    /**
+     * Defines the default item mode to use.
+     *
+     * @var string
+     * @config
+     */
+    private static $default_item_mode = 'block';
     
     /**
      * Defines the default heading level to use.
@@ -142,6 +168,11 @@ class ContactComponent extends BaseComponent
                             $this->fieldLabel('HeadingLevel'),
                             $this->getTitleLevelOptions()
                         )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder),
+                        DropdownField::create(
+                            'ItemMode',
+                            $this->fieldLabel('ItemMode'),
+                            $this->getItemModeOptions()
+                        )->setEmptyString(' ')->setAttribute('data-placeholder', $placeholder)
                     ]
                 )
             ]
@@ -185,6 +216,7 @@ class ContactComponent extends BaseComponent
         
         // Define Field Labels:
         
+        $labels['ItemMode'] = _t(__CLASS__ . '.ITEMMODE', 'Item mode');
         $labels['ShowIcons'] = _t(__CLASS__ . '.SHOWICONS', 'Show icons');
         $labels['HeadingLevel'] = _t(__CLASS__ . '.HEADINGLEVEL', 'Heading level');
         $labels['ContactStyle'] = $labels['ContactOptions'] = _t(__CLASS__ . '.CONTACT', 'Contact');
@@ -203,9 +235,21 @@ class ContactComponent extends BaseComponent
     {
         $classes = ['items'];
         
+        $classes[] = $this->getItemModeClass();
+        
         $this->extend('updateWrapperClassNames', $classes);
         
         return $classes;
+    }
+    
+    /**
+     * Answers the item mode class for the receiver.
+     *
+     * @return string
+     */
+    public function getItemModeClass()
+    {
+        return sprintf('item-mode-%s', $this->ItemMode ? $this->ItemMode : $this->config()->default_item_mode);
     }
     
     /**
@@ -284,5 +328,18 @@ class ContactComponent extends BaseComponent
         }
         
         return parent::isDisabled();
+    }
+    
+    /**
+     * Answers an array of options for the item mode field.
+     *
+     * @return array
+     */
+    public function getItemModeOptions()
+    {
+        return [
+            self::ITEM_MODE_BLOCK  => _t(__CLASS__ . '.BLOCK', 'Block'),
+            self::ITEM_MODE_INLINE => _t(__CLASS__ . '.INLINE', 'Inline')
+        ];
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "silverware/contact",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "description": "SilverWare Contact Module.",
   "homepage": "https://github.com/praxisnetau/silverware-contact",
   "keywords": [
@@ -33,7 +33,10 @@
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     },
-    "installer-name": "silverware-contact"
+    "expose": [
+      "admin/client/dist",
+      "client/dist"
+    ]
   },
   "minimum-stability": "dev",
   "prefer-stable": true

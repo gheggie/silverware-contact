@@ -68,7 +68,7 @@ class ContactPage extends Page
      * @var string
      * @config
      */
-    private static $icon = 'silverware-contact/admin/client/dist/images/icons/ContactPage.png';
+    private static $icon = 'silverware/contact: admin/client/dist/images/icons/ContactPage.png';
     
     /**
      * Maps field names to field types for this object.

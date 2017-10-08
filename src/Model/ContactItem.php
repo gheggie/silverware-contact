@@ -64,7 +64,7 @@ class ContactItem extends Component
      * @var string
      * @config
      */
-    private static $icon = 'silverware-contact/admin/client/dist/images/icons/ContactItem.png';
+    private static $icon = 'silverware/contact: admin/client/dist/images/icons/ContactItem.png';
     
     /**
      * Defines an ancestor class to hide from the admin interface.
