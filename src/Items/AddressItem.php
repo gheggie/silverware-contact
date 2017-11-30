@@ -17,6 +17,7 @@
 
 namespace SilverWare\Contact\Items;
 
+use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextField;
 use SilverStripe\i18n\i18n;
@@ -75,6 +76,7 @@ class AddressItem extends ContactItem
      */
     private static $db = [
         'Street' => 'Varchar(255)',
+        'StreetLine2' => 'Varchar(255)',
         'Suburb' => 'Varchar(255)',
         'StateTerritory' => 'Varchar(128)',
         'PostalCode' => 'Varchar(32)',
@@ -125,10 +127,16 @@ class AddressItem extends ContactItem
                     'AddressSection',
                     $this->fieldLabel('Address'),
                     [
-                        TextField::create(
-                            'Street',
-                            $this->fieldLabel('Street')
-                        ),
+                        CompositeField::create([
+                            TextField::create(
+                                'Street',
+                                ''
+                            ),
+                            TextField::create(
+                                'StreetLine2',
+                                ''
+                            )->addExtraClass('street-line-2')
+                        ])->setName('StreetWrapper')->setTitle($this->fieldLabel('Street')),
                         TextField::create(
                             'Suburb',
                             $this->fieldLabel('Suburb')
@@ -201,6 +209,22 @@ class AddressItem extends ContactItem
     }
     
     /**
+     * Event method called before the receiver is written to the database.
+     *
+     * @return void
+     */
+    public function onBeforeWrite()
+    {
+        // Call Parent Event:
+        
+        parent::onBeforeWrite();
+        
+        // Correct Country Value:
+        
+        $this->Country = strtolower($this->Country);
+    }
+    
+    /**
      * Answers the full name of the country.
      *
      * @return string
@@ -221,6 +245,10 @@ class AddressItem extends ContactItem
         
         if ($this->Street) {
             $address[] = $this->Street;
+        }
+        
+        if ($this->StreetLine2) {
+            $address[] = $this->StreetLine2;
         }
         
         if ($this->Suburb || $this->PostalCode || $this->StateTerritory) {
