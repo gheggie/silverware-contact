@@ -1,8 +1,15 @@
 <div class="address">
-  <% if $Street %>
-    <div class="street">
-      $Street
-    </div>
+  <% if $Street || $StreetLine2 %>
+    <% if $Street %>
+      <div class="street">
+        $Street
+      </div>
+    <% end_if %>
+    <% if $StreetLine2 %>
+      <div class="street line-two">
+        $StreetLine2
+      </div>
+    <% end_if %>
   <% end_if %>
   <% if $Suburb || $StateTerritory || $PostalCode %>
     <div class="suburb state-territory postal-code">
