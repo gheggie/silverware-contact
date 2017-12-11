@@ -74,6 +74,14 @@ class ContactComponent extends BaseComponent
     private static $icon = 'silverware/contact: admin/client/dist/images/icons/ContactComponent.png';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_ContactComponent';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string

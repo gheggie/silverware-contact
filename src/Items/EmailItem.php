@@ -59,6 +59,14 @@ class EmailItem extends ContactItem
     private static $description = 'A contact item to show an email address';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_Contact_EmailItem';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string
