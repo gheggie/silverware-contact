@@ -56,6 +56,14 @@ class TextItem extends ContactItem
     private static $description = 'A contact item to show a string of text';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_Contact_TextItem';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string

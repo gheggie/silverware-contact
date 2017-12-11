@@ -55,6 +55,13 @@ class FaxItem extends ContactItem
      */
     private static $description = 'A contact item to show a fax number';
     
+    /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_Contact_FaxItem';
     
     /**
      * Defines an ancestor class to hide from the admin interface.

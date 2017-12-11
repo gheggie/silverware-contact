@@ -64,6 +64,14 @@ class ContactMessage extends DataObject
     private static $default_sort = '"Created" DESC';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_ContactMessage';
+    
+    /**
      * Maps field names to field types for this object.
      *
      * @var array

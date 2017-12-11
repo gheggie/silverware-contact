@@ -57,6 +57,14 @@ class HeadingItem extends ContactItem
     private static $description = 'A contact item to show a heading';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_Contact_HeadingItem';
+    
+    /**
      * Defines an ancestor class to hide from the admin interface.
      *
      * @var string

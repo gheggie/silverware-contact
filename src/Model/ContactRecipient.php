@@ -68,6 +68,14 @@ class ContactRecipient extends DataObject
     private static $default_sort = 'Name';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_ContactRecipient';
+    
+    /**
      * Maps field names to field types for this object.
      *
      * @var array

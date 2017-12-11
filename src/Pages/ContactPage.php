@@ -71,6 +71,14 @@ class ContactPage extends Page
     private static $icon = 'silverware/contact: admin/client/dist/images/icons/ContactPage.png';
     
     /**
+     * Defines the table name to use for this object.
+     *
+     * @var string
+     * @config
+     */
+    private static $table_name = 'SilverWare_ContactPage';
+    
+    /**
      * Maps field names to field types for this object.
      *
      * @var array
