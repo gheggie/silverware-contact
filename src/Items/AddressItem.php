@@ -17,6 +17,7 @@
 
 namespace SilverWare\Contact\Items;
 
+use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\CompositeField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextField;
@@ -88,7 +89,8 @@ class AddressItem extends ContactItem
         'Suburb' => 'Varchar(255)',
         'StateTerritory' => 'Varchar(128)',
         'PostalCode' => 'Varchar(32)',
-        'Country' => 'Varchar(2)'
+        'Country' => 'Varchar(2)',
+        'HideCountry' => 'Boolean'
     ];
     
     /**
@@ -98,7 +100,8 @@ class AddressItem extends ContactItem
      * @config
      */
     private static $defaults = [
-        'FontIcon' => 'building'
+        'FontIcon' => 'building',
+        'HideCountry' => 0
     ];
     
     /**
@@ -166,6 +169,22 @@ class AddressItem extends ContactItem
             ]
         );
         
+        // Create Options Fields:
+        
+        $fields->addFieldToTab(
+            'Root.Options',
+            FieldSection::create(
+                'AddressOptions',
+                $this->fieldLabel('Address'),
+                [
+                    CheckboxField::create(
+                        'HideCountry',
+                        $this->fieldLabel('HideCountry')
+                    )
+                ]
+            )
+        );
+        
         // Answer Field Objects:
         
         return $fields;
@@ -210,6 +229,7 @@ class AddressItem extends ContactItem
         $labels['Country'] = _t(__CLASS__ . '.COUNTRY', 'Country');
         $labels['PostalCode'] = _t(__CLASS__ . '.POSTALCODE', 'Postal code');
         $labels['StateTerritory'] = _t(__CLASS__ . '.STATETERRITORY', 'State/Territory');
+        $labels['HideCountry'] = _t(__CLASS__ . '.HIDECOUNTRY', 'Hide country');
         
         // Answer Field Labels:
         
@@ -284,5 +304,15 @@ class AddressItem extends ContactItem
         }
         
         return implode("\n", $address);
+    }
+    
+    /**
+     * Answers true if the country is to be shown in the template.
+     *
+     * @return boolean
+     */
+    public function getCountryShown()
+    {
+        return (!$this->HideCountry && $this->CountryName);
     }
 }

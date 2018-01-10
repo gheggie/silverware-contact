@@ -18,7 +18,7 @@
       <% if $PostalCode %><span class="postal-code">$PostalCode</span><% end_if %>
     </div>
   <% end_if %>
-  <% if $CountryName %>
+  <% if $CountryShown %>
     <div class="country">
       $CountryName
     </div>
