@@ -88,6 +88,7 @@ class ContactRecipient extends DataObject
         'NameFrom' => 'Varchar(128)',
         'EmailFrom' => 'Varchar(255)',
         'EmailSubject' => 'Varchar(255)',
+        'OnSendMessage' => 'Varchar(255)',
         'Disabled' => 'Boolean'
     ];
     
@@ -194,6 +195,15 @@ class ContactRecipient extends DataObject
                     'EmailSubject',
                     $this->fieldLabel('EmailSubject')
                 ),
+                TextField::create(
+                    'OnSendMessage',
+                    $this->fieldLabel('OnSendMessage')
+                )->setRightTitle(
+                    _t(
+                        __CLASS__ . '.ONSENDMESSAGERIGHTTITLE',
+                        'Shown to the user after sending a message.'
+                    )
+                ),
                 CheckboxField::create(
                     'Disabled',
                     $this->fieldLabel('Disabled')
@@ -243,6 +253,7 @@ class ContactRecipient extends DataObject
         $labels['SendTo'] = _t(__CLASS__ . '.SENDTO', 'Send to');
         $labels['SendFrom'] = _t(__CLASS__ . '.SENDFROM', 'Send from');
         $labels['EmailSubject'] = _t(__CLASS__ . '.EMAILSUBJECT', 'Email subject');
+        $labels['OnSendMessage'] = _t(__CLASS__ . '.ONSENDMESSAGE', 'On Send message');
         
         $labels['Name'] = $labels['NameTo'] = $labels['NameFrom'] = _t(__CLASS__ . '.NAME', 'Name');
         $labels['Email'] = $labels['EmailTo'] = $labels['EmailFrom'] = _t(__CLASS__ . '.EMAIL', 'Email');

@@ -206,9 +206,21 @@ class ContactPageController extends PageController
             $message->send();
         }
         
+        // Obtain On Send Message:
+        
+        $message = $this->OnSendMessage;
+        
+        if ($this->ShowRecipientField && isset($data['RecipientID'])) {
+            
+            if ($recipient = $this->data()->Recipients()->byID($data['RecipientID'])) {
+                $message = $recipient->OnSendMessage ?: $this->OnSendMessage;
+            }
+            
+        }
+        
         // Define Session Message:
         
-        $form->sessionMessage($this->OnSendMessage, ValidationResult::TYPE_GOOD);
+        $form->sessionMessage($message, ValidationResult::TYPE_GOOD);
         
         // Redirect Back to Form:
         
