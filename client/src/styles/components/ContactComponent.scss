@@ -9,7 +9,8 @@
       
       .contactitem,
       .contactitem > header,
-      .contactitem > div.content {
+      .contactitem > div.content,
+      .contactitem > div.content div {
         display: inline-block;
       }
       
@@ -29,6 +30,24 @@
       
       .contactitem {
         margin-bottom: $spacer;
+      }
+      
+    }
+    
+    &.item-mode-list {
+      
+      padding: 0;
+      list-style: none;
+      
+      .contactitem {
+        overflow: visible;
+        margin-bottom: $spacer-half;
+      }
+      
+      .contactitem > header > * {
+        margin: 0;
+        color: inherit;
+        font-size: inherit;
       }
       
     }
