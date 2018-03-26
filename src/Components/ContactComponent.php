@@ -40,6 +40,7 @@ class ContactComponent extends BaseComponent
      */
     const ITEM_MODE_BLOCK  = 'block';
     const ITEM_MODE_INLINE = 'inline';
+    const ITEM_MODE_LIST   = 'list';
     
     /**
      * Human-readable singular name.
@@ -98,6 +99,7 @@ class ContactComponent extends BaseComponent
     private static $db = [
         'HeadingLevel' => 'Varchar(2)',
         'ItemMode' => 'Varchar(8)',
+        'HideTitles' => 'Boolean',
         'ShowIcons' => 'Boolean'
     ];
     
@@ -108,6 +110,7 @@ class ContactComponent extends BaseComponent
      * @config
      */
     private static $defaults = [
+        'HideTitles' => 0,
         'ShowIcons' => 1
     ];
     
@@ -196,6 +199,10 @@ class ContactComponent extends BaseComponent
                     $this->fieldLabel('ContactOptions'),
                     [
                         CheckboxField::create(
+                            'HideTitles',
+                            $this->fieldLabel('HideTitles')
+                        ),
+                        CheckboxField::create(
                             'ShowIcons',
                             $this->fieldLabel('ShowIcons')
                         )
@@ -226,6 +233,7 @@ class ContactComponent extends BaseComponent
         
         $labels['ItemMode'] = _t(__CLASS__ . '.ITEMMODE', 'Item mode');
         $labels['ShowIcons'] = _t(__CLASS__ . '.SHOWICONS', 'Show icons');
+        $labels['HideTitles'] = _t(__CLASS__ . '.HIDETITLES', 'Hide titles');
         $labels['HeadingLevel'] = _t(__CLASS__ . '.HEADINGLEVEL', 'Heading level');
         $labels['ContactStyle'] = $labels['ContactOptions'] = _t(__CLASS__ . '.CONTACT', 'Contact');
         
@@ -245,9 +253,23 @@ class ContactComponent extends BaseComponent
         
         $classes[] = $this->getItemModeClass();
         
+        if ($this->ShowIcons && $this->IsList) {
+            $classes[] = 'fa-ul';
+        }
+        
         $this->extend('updateWrapperClassNames', $classes);
         
         return $classes;
+    }
+    
+    /**
+     * Answers the tag for the item wrapper element.
+     *
+     * @return string
+     */
+    public function getWrapperTag()
+    {
+        return $this->IsList ? 'ul' : 'div';
     }
     
     /**
@@ -339,6 +361,16 @@ class ContactComponent extends BaseComponent
     }
     
     /**
+     * Answers true if the receiver is set to list item mode.
+     *
+     * @return boolean
+     */
+    public function getIsList()
+    {
+        return ($this->ItemMode == self::ITEM_MODE_LIST);
+    }
+    
+    /**
      * Answers an array of options for the item mode field.
      *
      * @return array
@@ -347,7 +379,8 @@ class ContactComponent extends BaseComponent
     {
         return [
             self::ITEM_MODE_BLOCK  => _t(__CLASS__ . '.BLOCK', 'Block'),
-            self::ITEM_MODE_INLINE => _t(__CLASS__ . '.INLINE', 'Inline')
+            self::ITEM_MODE_INLINE => _t(__CLASS__ . '.INLINE', 'Inline'),
+            self::ITEM_MODE_LIST => _t(__CLASS__ . '.LIST', 'List')
         ];
     }
 }

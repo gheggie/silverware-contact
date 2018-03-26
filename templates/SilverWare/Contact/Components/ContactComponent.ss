@@ -1,5 +1,5 @@
-<div class="$WrapperClass">
+<$WrapperTag class="$WrapperClass">
   <% loop $EnabledItems %>
     $render
   <% end_loop %>
-</div>
+</$WrapperTag>

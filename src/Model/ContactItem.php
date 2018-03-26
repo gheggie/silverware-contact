@@ -200,6 +200,26 @@ class ContactItem extends Component
     }
     
     /**
+     * Answers the item tag for the receiver.
+     *
+     * @return string
+     */
+    public function getItemTag()
+    {
+        return $this->IsListItem ? 'li' : 'section';
+    }
+    
+    /**
+     * Answers true if the receiver is a list item.
+     *
+     * @return boolean
+     */
+    public function getIsListItem()
+    {
+        return (($parent = $this->getParent()) && $parent->IsList);
+    }
+    
+    /**
      * Answers true if the font icon is to be shown.
      *
      * @return boolean
@@ -208,6 +228,18 @@ class ContactItem extends Component
     {
         if ($parent = $this->getParent()) {
             return (boolean) $parent->ShowIcons;
+        }
+    }
+    
+    /**
+     * Answers true if the title text is to be shown.
+     *
+     * @return boolean
+     */
+    public function getShowText()
+    {
+        if ($parent = $this->getParent()) {
+            return !$parent->HideTitles;
         }
     }
     
@@ -229,6 +261,16 @@ class ContactItem extends Component
     public function getFontIconFixedWidth()
     {
         return true;
+    }
+    
+     /**
+     * Answers true to enable list item mode.
+     *
+     * @return boolean
+     */
+    public function getFontIconListItem()
+    {
+        return $this->IsListItem;
     }
     
     /**
