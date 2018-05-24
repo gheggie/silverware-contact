@@ -17,10 +17,11 @@
 
 namespace SilverWare\Contact\Items;
 
-use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\TextField;
 use SilverWare\Contact\Model\ContactItem;
 use SilverWare\Forms\FieldSection;
+use SilverWare\Forms\ToggleGroup;
 
 /**
  * An extension of the contact item class for a phone item.
@@ -33,6 +34,12 @@ use SilverWare\Forms\FieldSection;
  */
 class PhoneItem extends ContactItem
 {
+    /**
+     * Define constants.
+     */
+    const LINK_TYPE_TEL    = 'tel';
+    const LINK_TYPE_CALLTO = 'callto';
+    
     /**
      * Human-readable singular name.
      *
@@ -82,6 +89,7 @@ class PhoneItem extends ContactItem
     private static $db = [
         'PhoneNumber' => 'Varchar(64)',
         'CallToNumber' => 'Varchar(64)',
+        'LinkType' => 'Varchar(16)',
         'LinkNumber' => 'Boolean'
     ];
     
@@ -93,7 +101,8 @@ class PhoneItem extends ContactItem
      */
     private static $defaults = [
         'FontIcon' => 'phone',
-        'LinkNumber' => 1
+        'LinkNumber' => 1,
+        'LinkType' => self::LINK_TYPE_TEL
     ];
     
     /**
@@ -136,9 +145,21 @@ class PhoneItem extends ContactItem
                 'PhoneOptions',
                 $this->fieldLabel('PhoneOptions'),
                 [
-                    CheckboxField::create(
+                    ToggleGroup::create(
                         'LinkNumber',
-                        $this->fieldLabel('LinkNumber')
+                        $this->fieldLabel('LinkNumber'),
+                        [
+                            DropdownField::create(
+                                'LinkType',
+                                $this->fieldLabel('LinkType'),
+                                $this->getLinkTypeOptions()
+                            )->setRightTitle(
+                                _t(
+                                    __CLASS__ . '.LINKTYPERIGHTTITLE',
+                                    'The "tel" type is intended for phones, while "callto" is used with Skype.'
+                                )
+                            )
+                        ]
                     )
                 ]
             )
@@ -174,6 +195,7 @@ class PhoneItem extends ContactItem
         
         // Define Field Labels:
         
+        $labels['LinkType'] = _t(__CLASS__ . '.LINKTYPE', 'Link type');
         $labels['LinkNumber'] = _t(__CLASS__ . '.LINKNUMBER', 'Link number');
         $labels['PhoneNumber'] = _t(__CLASS__ . '.PHONENUMBER', 'Phone number');
         $labels['CallToNumber'] = _t(__CLASS__ . '.CALLTONUMBER', 'Call to number');
@@ -201,6 +223,33 @@ class PhoneItem extends ContactItem
      */
     public function getPhoneLink()
     {
-        return sprintf('callto:%s', $this->LinkableNumber);
+        return sprintf(
+            '%s:%s',
+            $this->LinkPrefix,
+            $this->LinkableNumber
+        );
+    }
+    
+    /**
+     * Answers the prefix for the phone link.
+     *
+     * @return string
+     */
+    public function getLinkPrefix()
+    {
+        return ($this->LinkType === self::LINK_TYPE_CALLTO) ? self::LINK_TYPE_CALLTO : self::LINK_TYPE_TEL;
+    }
+    
+    /**
+     * Answers an array of options for the link type field.
+     *
+     * @return array
+     */
+    public function getLinkTypeOptions()
+    {
+        return [
+            self::LINK_TYPE_TEL    => _t(__CLASS__ . '.TEL', 'tel'),
+            self::LINK_TYPE_CALLTO => _t(__CLASS__ . '.CALLTO', 'callto')
+        ];
     }
 }
