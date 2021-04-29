@@ -1,5 +1,5 @@
 {
-    "name": "praxisnetau/silverware-contact",
+    "name": "silverware/contact",
     "description": "Contact module for SilverWare.",
     "type": "silverstripe-module",
     "homepage": "https://github.com/praxisnetau/silverware-contact",
@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "praxisnetau/silverware": "~1.1"
+        "praxisnetau/silverware": "3.x.x-dev"
     },
     "extra": {
         "installer-name": "silverware-contact"
