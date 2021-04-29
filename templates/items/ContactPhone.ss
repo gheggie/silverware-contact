@@ -1,0 +1,1 @@
+<% if $LinkNumber %><a href="$Link"><% end_if %><span class="phone">$PhoneNumber</span><% if $LinkNumber %></a><% end_if %>

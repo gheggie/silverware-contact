@@ -1,0 +1,25 @@
+/* Contact Page CSS Definitions:
+======================================================================================================================== */
+
+/* Media Queries:
+======================================================================================================================== */
+
+/* Larger than tablet */
+
+@media (min-width: 750px) {
+  
+  #ContactPage form div#FirstName,
+  #ContactPage form div#LastName,
+  #ContactPage form div#Form_Form_FirstName_Holder,
+  #ContactPage form div#Form_Form_LastName_Holder {
+    float: left;
+    clear: none;
+    width: 50%;
+  }
+  
+  #ContactPage form div#FirstName,
+  #ContactPage form div#Form_Form_FirstName_Holder {
+    padding-right: 2rem;
+  }
+  
+}

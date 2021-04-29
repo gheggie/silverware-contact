@@ -1,0 +1,17 @@
+/* SilverWare Contact Module CMS CSS Definitions:
+===================================================================================================================== */
+
+span.unread {
+  font-weight: bold;
+}
+
+div.formatted-message {
+  color: #555 !important;
+  background: #fff none;
+  border: 1px solid #c4c6c8;
+  line-height: 1.6;
+  margin-top: 20px;
+  max-height: 400px;
+  overflow: auto;
+  padding: 15px;
+}

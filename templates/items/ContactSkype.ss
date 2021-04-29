@@ -1,0 +1,1 @@
+<a href="$Link" title="$LinkTitle"><span class="name">$SkypeName</span></a>

@@ -1,0 +1,1 @@
+<% if $Link %><a href="$Link" title="$Name"<% if $OpenInNewTab %> target="_blank"<% end_if %>><span>$Name</span></a><% end_if %>

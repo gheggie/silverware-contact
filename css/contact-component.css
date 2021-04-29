@@ -1,0 +1,31 @@
+/* Contact Component CSS Definitions:
+===================================================================================================================== */
+
+.contactcomponent.typography a {
+  color: inherit;
+}
+
+.contactcomponent section.item {
+  margin-bottom: 2rem;
+}
+
+.contactcomponent div.items.wide.columns section.item > header {
+  float: left;
+  min-width: 200px;  /* default width */
+}
+
+.contactcomponent div.items.wide.columns section.item > header > * {
+  margin-bottom: 0 !important;
+}
+
+.contactcomponent div.items.wide.columns section.item > div.content {
+  margin-left: 200px;  /* default width */
+}
+
+.contactcomponent div.content::after,
+.contactcomponent div.items.wide.columns::after,
+.contactcomponent div.items.wide.columns section.item::after {
+  content: "";
+  display: table;
+  clear: both;
+}

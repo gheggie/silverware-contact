@@ -1,0 +1,1 @@
+<{$Tag}><span>$Text</span></{$Tag}>

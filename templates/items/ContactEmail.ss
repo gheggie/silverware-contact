@@ -1,0 +1,1 @@
+<% if $LinkEmail %><a href="$Link"><% end_if %><span class="email">$EmailAddress</span><% if $LinkEmail %></a><% end_if %>

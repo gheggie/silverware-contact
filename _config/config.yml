@@ -1,0 +1,7 @@
+LeftAndMain:
+  extra_requirements_css:
+    - silverware-contact/css/cms/cms.css
+
+HtmlEditorField_Toolbar:
+  extensions:
+    - ContactLinkFormExtension

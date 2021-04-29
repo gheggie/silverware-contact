@@ -1,0 +1,24 @@
+{
+    "name": "praxisnetau/silverware-contact",
+    "description": "Contact module for SilverWare.",
+    "type": "silverstripe-module",
+    "homepage": "https://github.com/praxisnetau/silverware-contact",
+    "keywords": ["silverstripe", "silverware", "contact"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Colin Tucker",
+            "role": "Developer",
+            "email": "colin@praxis.net.au",
+            "homepage": "http://www.praxis.net.au"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "praxisnetau/silverware": "~1.1"
+    },
+    "extra": {
+        "installer-name": "silverware-contact"
+    },
+    "target-dir": "silverware-contact"
+}
