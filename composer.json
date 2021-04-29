@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "praxisnetau/silverware": "3.x.x-dev"
+        "silverware/silverware": "3.x.x-dev"
     },
     "extra": {
         "installer-name": "silverware-contact"
